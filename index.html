@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Práctica de Examen · Matemática 8° · Liceo de Paraíso</title>
+<style>
+/* ── VARIABLES ── */
+:root{
+  --az:#0033A0;--az2:#002278;--az3:#1a4fc4;
+  --azc:#E8EEFF;--azb:#b3c3f0;
+  --am:#F2A900;--am2:#fff8e1;
+  --gc:#F5F5F5;--gm:#dde0e8;
+  --bl:#FFFFFF;--tx:#1A1A2E;--txs:#4a5270;
+  --vd:#1B7F3C;--vdc:#d4edda;--vdb:#7acb98;
+  --rj:#C0392B;--rjc:#fde8e6;--rjb:#e8a09a;
+  --nr:#e67e22;--nrc:#fef3e2;
+  --li:#7d3c98;--lic:#f5eef8;--lib:#c39bd3;
+  --sh:0 2px 14px rgba(0,51,160,.1);
+  --shh:0 5px 22px rgba(0,51,160,.18);
+  --r:12px;--t:.2s ease;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#edf0f7;color:var(--tx);min-height:100vh;display:flex;flex-direction:column;font-size:15px}
+
+/* ── HEADER ── */
+header{background:linear-gradient(135deg,var(--az2) 0%,var(--az) 65%,var(--az3) 100%);color:var(--bl);box-shadow:0 4px 18px rgba(0,0,0,.28);position:sticky;top:0;z-index:300}
+.hi{max-width:980px;margin:0 auto;padding:0 18px}
+.ht{display:flex;align-items:center;gap:13px;padding:11px 0 8px;border-bottom:1px solid rgba(255,255,255,.13)}
+.logo{width:52px;height:52px;background:var(--am);border-radius:10px;display:grid;place-items:center;font-weight:900;font-size:10.5px;color:var(--az2);flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.22);text-align:center;line-height:1.3;padding:4px}
+.htx{flex:1;min-width:0}
+.inst{font-size:clamp(14px,3vw,19px);font-weight:900;color:var(--am);margin-bottom:1px}
+.htx h1{font-size:clamp(11px,2.2vw,14px);font-weight:700;line-height:1.3;opacity:.88}
+.htx p{font-size:10px;opacity:.65;letter-spacing:.6px;text-transform:uppercase;margin-top:1px}
+.badge{background:var(--am);color:var(--az2);font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;text-transform:uppercase;flex-shrink:0}
+.tnav{display:flex;gap:0;padding-top:6px;overflow-x:auto}
+.tbtn{background:transparent;border:none;color:rgba(255,255,255,.55);font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 18px 10px;cursor:pointer;border-radius:var(--r) var(--r) 0 0;transition:var(--t);position:relative;white-space:nowrap;letter-spacing:.2px}
+.tbtn::after{content:'';position:absolute;bottom:0;left:50%;right:50%;height:3px;background:var(--am);border-radius:3px 3px 0 0;transition:left .25s,right .25s}
+.tbtn:hover{color:var(--bl);background:rgba(255,255,255,.1)}
+.tbtn.on{color:var(--bl);background:rgba(255,255,255,.14)}
+.tbtn.on::after{left:8px;right:8px}
+
+/* ── MAIN ── */
+main{flex:1;max-width:980px;width:100%;margin:0 auto;padding:24px 16px 50px}
+.panel{display:none}.panel.on{display:block;animation:fi .3s ease}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── PANEL HEADER ── */
+.ptit{font-size:clamp(17px,4vw,22px);font-weight:900;color:var(--az);display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.ticon{width:36px;height:36px;background:var(--azc);border-radius:8px;display:grid;place-items:center;font-size:20px;flex-shrink:0}
+.pins{background:var(--azc);border-left:4px solid var(--az);border-radius:0 var(--r) var(--r) 0;padding:11px 16px;font-size:13px;color:var(--az2);line-height:1.65;margin-bottom:22px}
+.pins strong{color:var(--az)}
+
+/* ── SECCIÓN DE SELECCIÓN ── */
+.btit{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--bl);background:var(--az3);border-radius:6px;padding:5px 14px;margin:24px 0 14px;display:inline-flex;align-items:center;gap:6px}
+.btit:first-of-type{margin-top:0}
+.pb{background:var(--bl);border-radius:var(--r);padding:20px 22px 16px;margin-bottom:14px;box-shadow:var(--sh);border:1.5px solid var(--gm);transition:border-color .2s}
+.pb.ok2{border-color:var(--vdb)}.pb.err2{border-color:var(--rjb)}
+.pnum{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--am);margin-bottom:6px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.btag{background:var(--azc);color:var(--az);border-radius:4px;padding:2px 8px;font-size:10px}
+.ptx{font-size:14px;font-weight:600;color:var(--tx);margin-bottom:14px;line-height:1.75}
+.math{font-style:italic;font-weight:700;color:var(--az);background:var(--azc);padding:2px 6px;border-radius:4px;display:inline-block;margin:1px 2px}
+.mblock{background:var(--gc);border-left:3px solid var(--am);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:14px;line-height:1.8}
+.scenario{background:var(--gc);border-left:3px solid var(--am);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13.5px;line-height:1.75;font-style:italic}
+.ol{list-style:none;display:flex;flex-direction:column;gap:8px}
+.ob{width:100%;background:var(--gc);border:2px solid var(--gm);border-radius:9px;padding:10px 14px;font-family:inherit;font-size:13.5px;text-align:left;cursor:pointer;transition:var(--t);display:flex;align-items:flex-start;gap:11px;line-height:1.5;color:var(--tx)}
+.ob:hover:not(:disabled){border-color:var(--az);background:var(--azc);transform:translateX(2px)}
+.mk{width:26px;height:26px;border-radius:50%;border:2px solid #9aa3bc;flex-shrink:0;display:grid;place-items:center;font-size:11px;font-weight:800;transition:var(--t);margin-top:1px}
+.ob.ok3{border-color:var(--vdb);background:var(--vdc);color:var(--vd);font-weight:700}
+.ob.ok3 .mk{border-color:var(--vd);background:var(--vd);color:var(--bl)}
+.ob.err3{border-color:var(--rjb);background:var(--rjc);color:var(--rj)}
+.ob.err3 .mk{border-color:var(--rj);background:var(--rj);color:var(--bl)}
+.ob:disabled{cursor:default}
+.retro{margin-top:10px;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.7;display:none}
+.retro.ok4{background:var(--vdc);border-left:4px solid var(--vd);color:#145c2b;display:block}
+.retro.err4{background:var(--nrc);border-left:4px solid var(--nr);color:#7a4000;display:block}
+.retro strong{font-weight:800}
+
+/* ── PUNTAJE ── */
+.pa{margin-top:30px;text-align:center}
+.bpunt{background:linear-gradient(135deg,var(--am),#cc8000);color:var(--az2);border:none;border-radius:var(--r);padding:13px 42px;font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;transition:var(--t);box-shadow:0 4px 14px rgba(242,169,0,.4)}
+.bpunt:hover{transform:translateY(-3px);box-shadow:0 7px 22px rgba(242,169,0,.45)}
+.rf{display:none;margin-top:22px;padding:28px 20px 24px;border-radius:var(--r);background:var(--azc);border:2px solid var(--azb);text-align:center}
+.rf.vis{display:block;animation:fi .4s ease}
+.rn{font-size:clamp(40px,9vw,58px);font-weight:900;color:var(--az);line-height:1}
+.rs{font-size:13px;color:var(--az2);font-weight:700;margin-top:4px}
+.rbt{width:220px;height:10px;background:rgba(0,51,160,.13);border-radius:5px;margin:14px auto 12px;overflow:hidden}
+.rbf{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--az),var(--az3));transition:width .8s ease}
+.rm{font-size:14px;color:var(--tx);line-height:1.7;max-width:530px;margin:0 auto}
+
+/* ── CORRESPONDENCIA ── */
+.corr-wrap{background:var(--bl);border-radius:var(--r);padding:22px;box-shadow:var(--sh);border:1.5px solid var(--gm)}
+.corr-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.col-hdr{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--bl);background:var(--az);padding:7px 14px;border-radius:7px;margin-bottom:12px;display:block}
+.col-hdr.d{background:var(--am);color:var(--az2)}
+.corr-item{background:var(--gc);border:2px solid var(--gm);border-radius:10px;padding:11px 14px;margin-bottom:10px;font-size:13px;line-height:1.6;cursor:pointer;transition:var(--t);user-select:none;position:relative}
+.corr-item:last-child{margin-bottom:0}
+.corr-item:hover:not(.matched):not(.sel-c){border-color:var(--az);background:var(--azc);transform:translateY(-1px)}
+.corr-item.sel-c{border-color:var(--am);background:var(--am2);box-shadow:0 0 0 3px rgba(242,169,0,.22)}
+.corr-item.matched{border-color:var(--vdb);background:var(--vdc);color:var(--vd);font-weight:700;cursor:default;pointer-events:none}
+.corr-item.matched::after{content:'✓';position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--vd);font-size:16px;font-weight:900}
+.corr-item.wrong-flash{border-color:var(--rjb);background:var(--rjc);animation:shk .4s ease}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.corr-footer{margin-top:18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.corr-score{font-size:13.5px;color:var(--az);font-weight:700}
+.corr-score.win{color:var(--vd);font-size:15px}
+.btnr{background:var(--az);color:var(--bl);border:none;border-radius:var(--r);padding:10px 22px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:var(--t);box-shadow:var(--sh)}
+.btnr:hover{background:var(--az2);transform:translateY(-1px)}
+
+/* ── OPERACIÓN COMBINADA (libre) ── */
+.op-wrap{background:var(--bl);border-radius:var(--r);padding:24px;box-shadow:var(--sh);border:1.5px solid var(--gm);margin-bottom:18px}
+.op-wrap h3{font-size:15px;font-weight:800;color:var(--az);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--am)}
+.op-enunc{background:var(--gc);border-radius:8px;padding:16px;font-size:18px;font-weight:700;color:var(--tx);line-height:2.2;margin-bottom:16px;text-align:center;border:1.5px solid var(--gm)}
+.op-pasos{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.op-paso-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--txs);margin-bottom:4px}
+.op-paso-inp{width:100%;border:2px solid var(--gm);border-radius:8px;padding:10px 14px;font-family:inherit;font-size:14px;color:var(--tx);background:var(--gc);transition:var(--t);outline:none;min-height:44px}
+.op-paso-inp:focus{border-color:var(--az);background:var(--azc)}
+.op-paso-inp.ok-in{border-color:var(--vd);background:var(--vdc);color:var(--vd)}
+.op-paso-inp.err-in{border-color:var(--rj);background:var(--rjc);color:var(--rj)}
+.op-btns{display:flex;gap:10px;flex-wrap:wrap}
+.op-btn-ver{background:var(--az);color:var(--bl);border:none;border-radius:8px;padding:10px 22px;font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;transition:var(--t)}
+.op-btn-ver:hover{background:var(--az2);transform:translateY(-1px)}
+.op-btn-solucion{background:var(--gc);color:var(--az);border:2px solid var(--az);border-radius:8px;padding:10px 22px;font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;transition:var(--t)}
+.op-btn-solucion:hover{background:var(--azc)}
+.op-resultado{margin-top:14px;padding:12px 16px;border-radius:8px;font-size:13.5px;line-height:1.7;display:none}
+.op-resultado.vis-ok{background:var(--vdc);border-left:4px solid var(--vd);color:#145c2b;display:block}
+.op-resultado.vis-sol{background:var(--lic);border-left:4px solid var(--li);color:#4a235a;display:block}
+.solucion-box{background:#f9f9ff;border:1.5px dashed var(--lib);border-radius:8px;padding:14px;margin-top:10px;font-size:13.5px;line-height:2;display:none}
+.solucion-box.vis{display:block}
+.frac{display:inline-block;text-align:center;vertical-align:middle;line-height:1.2;margin:0 3px}
+.frac span{display:block;padding:0 3px}
+.frac .num{border-bottom:1.5px solid currentColor}
+.step-line{margin-bottom:6px;padding-left:14px;border-left:3px solid var(--am)}
+
+/* ── PROBLEMA (libre) ── */
+.prob-wrap{background:var(--bl);border-radius:var(--r);padding:24px;box-shadow:var(--sh);border:1.5px solid var(--gm);margin-bottom:18px}
+.prob-wrap h3{font-size:15px;font-weight:800;color:var(--az);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--am)}
+.prob-enunc{background:var(--gc);border-left:4px solid var(--az3);padding:14px 16px;border-radius:0 10px 10px 0;font-size:13.5px;line-height:1.8;margin-bottom:16px}
+.prob-tabla{width:100%;border-collapse:collapse;margin-bottom:14px;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.prob-tabla th{background:var(--az);color:white;padding:9px 14px;font-size:13px;font-weight:700;text-align:left}
+.prob-tabla td{padding:9px 14px;border-bottom:1px solid var(--gm);font-size:13px;vertical-align:top}
+.prob-tabla tr:last-child td{border-bottom:none}
+.prob-tabla tr:nth-child(even) td{background:var(--gc)}
+.prob-inp{width:100%;border:2px solid var(--gm);border-radius:8px;padding:9px 12px;font-family:inherit;font-size:13.5px;color:var(--tx);background:var(--gc);transition:var(--t);outline:none;min-height:40px}
+.prob-inp:focus{border-color:var(--az);background:var(--azc)}
+.prob-inp.ok-in{border-color:var(--vd);background:var(--vdc);color:var(--vd)}
+.prob-inp.err-in{border-color:var(--rj);background:var(--rjc);color:var(--rj)}
+
+/* ── FOOTER ── */
+footer{background:var(--az2);padding:10px 20px;color:var(--bl)}
+.fi2{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.flbl{font-size:11.5px;font-weight:700;white-space:nowrap;opacity:.8}
+.ftr{flex:1;height:7px;background:rgba(255,255,255,.18);border-radius:4px;overflow:hidden}
+.fff{height:100%;background:var(--am);border-radius:4px;transition:width .5s ease}
+.fpct{font-size:11.5px;font-weight:800;opacity:.92;white-space:nowrap}
+.fdots{display:flex;gap:5px}
+.dot{width:10px;height:10px;border-radius:50%;border:2px solid rgba(255,255,255,.35);transition:var(--t)}
+.dot.v{background:var(--am);border-color:var(--am)}
+
+@media(max-width:600px){
+  .corr-grid{grid-template-columns:1fr}
+  .tbtn{padding:8px 11px;font-size:11.5px}
+  .badge{display:none}
+  main{padding:14px 10px 42px}
+  .op-wrap,.prob-wrap,.corr-wrap,.pb{padding:14px 12px 12px}
+  .op-enunc{font-size:15px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hi">
+    <div class="ht">
+      <div class="logo">Liceo<br>Paraíso<br>8°</div>
+      <div class="htx">
+        <div class="inst">🏫 Liceo de Paraíso · Depto. de Matemática</div>
+        <h1>Práctica de Examen · 2da Prueba · I Semestre 2026 · Prof. Melissa Cubero S.</h1>
+        <p>Octavo año · Potencias · Radicales · Fracciones · Operaciones combinadas</p>
+      </div>
+      <span class="badge">8° año</span>
+    </div>
+    <nav class="tnav" role="tablist">
+      <button class="tbtn on" data-tab="sel" onclick="tab('sel')">📝 Selección</button>
+      <button class="tbtn" data-tab="corr" onclick="tab('corr')">🔗 Correspondencia</button>
+      <button class="tbtn" data-tab="op" onclick="tab('op')">🧮 Op. Combinada</button>
+      <button class="tbtn" data-tab="prob" onclick="tab('prob')">📐 Problemas</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ══════════════════════════════════════
+     PESTAÑA 1 — SELECCIÓN DE RESPUESTA
+══════════════════════════════════════ -->
+<section id="panel-sel" class="panel on" role="tabpanel">
+  <h2 class="ptit"><span class="ticon">📝</span>Selección de respuesta (16 ítems)</h2>
+  <div class="pins">
+    <strong>Indicaciones:</strong> En cada enunciado hay tres opciones, pero solo <strong>una es correcta</strong>. Hacé clic en la opción que considerás correcta. Recibirás retroalimentación inmediata. Al terminar presioná <em>"Ver puntaje"</em>.
+  </div>
+  <div id="qcont"></div>
+  <div class="pa">
+    <button class="bpunt" onclick="showScore()">📊 Ver puntaje</button>
+    <div class="rf" id="rf">
+      <div class="rn" id="rn">0/16</div>
+      <div class="rs">respuestas correctas</div>
+      <div class="rbt"><div class="rbf" id="rbf" style="width:0%"></div></div>
+      <div class="rm" id="rm"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     PESTAÑA 2 — CORRESPONDENCIA
+══════════════════════════════════════ -->
+<section id="panel-corr" class="panel" role="tabpanel">
+  <h2 class="ptit"><span class="ticon">🔗</span>Correspondencia (5 pares)</h2>
+  <div class="pins">
+    <strong>Indicaciones:</strong> Hacé clic en una expresión de la <strong>Columna 1</strong> (se resalta en amarillo) y luego hacé clic en su forma simplificada en la <strong>Columna 2</strong>. Si el par es correcto → verde. Si no → intentalo de nuevo.
+  </div>
+  <div class="corr-wrap">
+    <div class="corr-grid">
+      <div><span class="col-hdr">Columna 1 — Expresión</span><div id="corr-col1"></div></div>
+      <div><span class="col-hdr d">Columna 2 — Simplificación</span><div id="corr-col2"></div></div>
+    </div>
+    <div class="corr-footer">
+      <p class="corr-score" id="corr-sc"></p>
+      <button class="btnr" onclick="initCorr()">🔄 Reiniciar</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     PESTAÑA 3 — OPERACIÓN COMBINADA
+══════════════════════════════════════ -->
+<section id="panel-op" class="panel" role="tabpanel">
+  <h2 class="ptit"><span class="ticon">🧮</span>Operación combinada con fracciones</h2>
+  <div class="pins">
+    <strong>Indicaciones:</strong> Resolvé la operación combinada paso a paso. Escribí tu resultado en cada campo. Podés ver la solución completa con el botón correspondiente. Recordá la <strong>ley de prioridad</strong>: paréntesis → potencias/radicales → × ÷ → + −
+  </div>
+  <div id="op-cont"></div>
+</section>
+
+<!-- ══════════════════════════════════════
+     PESTAÑA 4 — PROBLEMAS
+══════════════════════════════════════ -->
+<section id="panel-prob" class="panel" role="tabpanel">
+  <h2 class="ptit"><span class="ticon">📐</span>Resolución de problemas</h2>
+  <div class="pins">
+    <strong>Indicaciones:</strong> Leé cada problema con atención. Identificá los datos, planteá la operación y escribí tu respuesta. Podés ver la solución completa con el botón <em>"Ver solución"</em>.
+  </div>
+  <div id="prob-cont"></div>
+</section>
+
+</main>
+
+<footer>
+  <div class="fi2">
+    <span class="flbl">Progreso de la práctica</span>
+    <div class="ftr"><div class="fff" id="fff" style="width:25%"></div></div>
+    <div class="fdots" id="fdots">
+      <div class="dot v" title="Selección"></div>
+      <div class="dot" title="Correspondencia"></div>
+      <div class="dot" title="Op. Combinada"></div>
+      <div class="dot" title="Problemas"></div>
+    </div>
+    <span class="fpct" id="fpct">1 / 4 secciones</span>
+  </div>
+</footer>
+
+<script>
+/* ══════ UTILIDADES ══════ */
+function shuf(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=0|Math.random()*(i+1);[b[i],b[j]]=[b[j],b[i]]}return b}
+
+/* ══════ PROGRESO ══════ */
+const TABS=['sel','corr','op','prob'],vis=new Set(['sel']);
+function updProg(){
+  const v=vis.size,t=TABS.length,p=Math.round(v/t*100);
+  document.getElementById('fff').style.width=p+'%';
+  document.getElementById('fpct').textContent=v+' / '+t+' secciones';
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('v',vis.has(TABS[i])));
+}
+function tab(id){
+  document.querySelectorAll('.tbtn').forEach(b=>b.classList.toggle('on',b.dataset.tab===id));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id==='panel-'+id));
+  vis.add(id);updProg();
+}
+
+/* ══════════════════════════════════════════════════
+   PESTAÑA 1 — SELECCIÓN (16 preguntas, 3 opciones)
+   Formato: [tema, textoHTML, idx_correcto(0-2), [A,B,C], pista, msg_ok]
+══════════════════════════════════════════════════ */
+const QQ=[
+
+/* PARTE A: NÚMEROS RACIONALES / PROBLEMAS CON FRACCIONES (2) */
+['Números racionales',
+'Una receta necesita <span class="math">3/4</span> de taza de azúcar. Si Sofía quiere hacer <span class="math">2/3</span> de esa receta, ¿cuánta azúcar necesita?',
+0,
+['<sup>1</sup>/<sub>2</sub> de taza','<sup>17</sup>/<sub>12</sub> de taza','<sup>9</sup>/<sub>8</sub> de taza'],
+'Para "x partes de y" se multiplica. Calculá 3/4 × 2/3 y simplificá.','¡Correcto! 3/4 × 2/3 = 6/12 = 1/2 taza de azúcar.'],
+
+['Números racionales',
+'Un tanque tiene <span class="math">5/6</span> de su capacidad llena. Luego se usa <span class="math">1/3</span> del total del tanque. ¿Qué fracción del tanque queda?',
+2,
+['<sup>2</sup>/<sub>3</sub>','<sup>1</sup>/<sub>2</sub>','<sup>1</sup>/<sub>2</sub>'],
+'Restá las fracciones: 5/6 − 1/3. Primero buscá denominador común.','¡Correcto! 5/6 − 2/6 = 3/6 = 1/2 del tanque.'],
+
+/* PARTE B: PARTES DE UNA POTENCIA (2) */
+['Partes de una potencia',
+'En la expresión <span class="math">x⁷</span>, ¿cuál es el exponente?',
+1,
+['x','7','x⁷'],
+'En una potencia de la forma base^exponente, el exponente es el número que indica cuántas veces se multiplica la base por sí misma.','¡Correcto! El exponente es 7. Indica que x se multiplica 7 veces por sí misma.'],
+
+['Partes de una potencia',
+'En la expresión <span class="math">(2y)⁴</span>, ¿cuál es la base?',
+0,
+['2y','4','y'],
+'Recordá que la base es todo lo que está elevado al exponente. ¿Qué está dentro del paréntesis?','¡Correcto! La base es (2y) completa, porque todo el paréntesis se eleva a la cuarta potencia.'],
+
+/* PARTE C: PROPIEDADES DE POTENCIAS (4) */
+['Propiedades de potencias',
+'La expresión <span class="math">x³ · x⁵</span> es equivalente a:',
+2,
+['x¹⁵','x²','x⁸'],
+'Al multiplicar potencias de la misma base, ¿qué se hace con los exponentes?','¡Correcto! Se aplica la propiedad del producto: x³ · x⁵ = x^(3+5) = x⁸.'],
+
+['Propiedades de potencias',
+'La expresión <span class="math">y¹⁰ ÷ y⁴</span> es equivalente a:',
+0,
+['y⁶','y¹⁴','y⁴⁰'],
+'Al dividir potencias de la misma base, ¿qué operación se hace con los exponentes?','¡Correcto! Propiedad del cociente: y¹⁰ ÷ y⁴ = y^(10−4) = y⁶.'],
+
+['Propiedades de potencias',
+'La expresión <span class="math">((t)⁴)³</span> es equivalente a:',
+1,
+['t⁷','t¹²','t'],
+'Al elevar una potencia a otra potencia, ¿qué operación se hace con los exponentes?','¡Correcto! Propiedad de la potencia de una potencia: (t⁴)³ = t^(4×3) = t¹².'],
+
+['Propiedades de potencias',
+'La expresión <span class="math">(3)⁻³</span> es equivalente a:',
+0,
+['<sup>1</sup>/<sub>27</sub>','-27','27'],
+'Un exponente negativo significa recíproco: a⁻ⁿ = 1/aⁿ. Calculá 3³ primero.','¡Correcto! 3⁻³ = 1/3³ = 1/27.'],
+
+/* PARTE D: PARTES Y SIMPLIFICACIÓN DE RADICALES (4) */
+['Radicales',
+'En la expresión <span class="math">∜81</span>, el índice es:',
+2,
+['81','9','4'],
+'El índice de un radical es el número pequeño que aparece sobre el símbolo de raíz, que indica el tipo de raíz.','¡Correcto! El índice es 4 (es una raíz cuarta). El 81 es el subradical.'],
+
+['Radicales',
+'En la expresión <span class="math">∛125</span>, el subradical es:',
+1,
+['3','125','5'],
+'El subradical (o radicando) es la expresión que queda dentro del símbolo de raíz.','¡Correcto! El subradical es 125. El índice es 3 (raíz cúbica).'],
+
+['Radicales',
+'La expresión <span class="math">∛27</span> es equivalente a:',
+0,
+['3','9','81'],
+'Preguntate: ¿qué número multiplicado por sí mismo 3 veces da 27? Intentá con 3.','¡Correcto! ∛27 = 3 porque 3³ = 3 × 3 × 3 = 27.'],
+
+['Radicales',
+'La expresión <span class="math">(-2)⁵</span> bajo una raíz cúbica: ∛[(-2)⁵] tiene signo:',
+1,
+['positivo, porque el índice es impar','negativo, porque la base es negativa y el índice es impar','no existe, porque la base es negativa'],
+'Raíces con índice impar de bases negativas sí existen y conservan el signo negativo de la base.','¡Correcto! Con índice impar (3), la raíz de un número negativo es negativa. ∛((-2)⁵) = ∛(-32) = -∛32.'],
+
+/* PARTE E: EXPONENTE FRACCIONARIO ↔ RADICAL (2) */
+['Exponente fraccionario ↔ radical',
+'La expresión <span class="math">n^(2/5)</span> es equivalente a:',
+2,
+['∜(n²)','n^(5/2)','⁵√(n²)'],
+'Recordá: a^(m/n) = ⁿ√(aᵐ). El denominador es el índice y el numerador es el exponente del subradical.','¡Correcto! n^(2/5) = ⁵√(n²). El denominador 5 es el índice y el 2 es el exponente del subradical.'],
+
+['Exponente fraccionario ↔ radical',
+'La expresión <span class="math">⁴√(k³)</span> es equivalente a:',
+0,
+['k^(3/4)','k^(4/3)','k^(¾ )'],
+'Para convertir un radical a exponente fraccionario: ⁿ√(aᵐ) = a^(m/n). ¿Cuál es el índice y cuál es el exponente del subradical?','¡Correcto! ⁴√(k³) = k^(3/4). El índice 4 es el denominador y el exponente 3 es el numerador.'],
+
+/* PARTE F: PROBLEMAS CONTEXTUALIZADOS (2) */
+['Problemas contextualizados',
+'Una cooperativa de productores de Paraíso tiene 3 600 kg de frijoles. Los empaca en bolsas de <span class="math">3/4</span> de kilogramo cada una. ¿Cuántas bolsas llena en total?',
+2,
+['2 700 bolsas','1 200 bolsas','4 800 bolsas'],
+'Para saber cuántas veces cabe 3/4 en 3 600, dividí: 3 600 ÷ 3/4. Dividir entre una fracción es multiplicar por su recíproco.','¡Correcto! 3 600 ÷ 3/4 = 3 600 × 4/3 = 14 400/3 = 4 800 bolsas.'],
+
+['Problemas contextualizados',
+'Un camión de la Zona de los Santos lleva <span class="math">5/8</span> de su capacidad de carga con café. Si la capacidad total es de 12 000 kg, ¿cuántos kilogramos de café lleva?',
+0,
+['7 500 kg','6 000 kg','4 800 kg'],
+'Para encontrar una fracción de un total, multiplicá. ¿Cuánto es 5/8 de 12 000?','¡Correcto! 12 000 × 5/8 = 60 000/8 = 7 500 kg de café.']
+];
+
+let est=[];
+function initQ(){
+  est=[];
+  const cnt=document.getElementById('qcont');cnt.innerHTML='';
+  const L=['A','B','C'];
+  const grupos=['Números racionales','Partes de una potencia','Propiedades de potencias','Radicales','Exponente fraccionario ↔ radical','Problemas contextualizados'];
+  QQ.forEach((q,qi)=>{
+    const [tema,tx,corr,ops,pista,msgOk]=q;
+    const mix=shuf([0,1,2]);const nc=mix.indexOf(corr);
+    est.push({nc,done:false,ok:false});
+    const prev=qi>0?QQ[qi-1][0]:null;
+    if(tema!==prev){
+      const bh=document.createElement('div');bh.className='btit';
+      const ico={'Números racionales':'🔢','Partes de una potencia':'🔡','Propiedades de potencias':'⚡','Radicales':'√','Exponente fraccionario ↔ radical':'↔','Problemas contextualizados':'📌'};
+      bh.innerHTML=(ico[tema]||'•')+' '+tema;
+      cnt.appendChild(bh);
+    }
+    const div=document.createElement('div');div.className='pb';div.id='p'+qi;
+    const nm=document.createElement('div');nm.className='pnum';
+    nm.innerHTML='Ítem '+(qi+1)+' de '+QQ.length+' <span class="btag">'+tema+'</span>';
+    div.appendChild(nm);
+    const td=document.createElement('div');td.className='ptx';td.innerHTML=tx;div.appendChild(td);
+    const ul=document.createElement('ul');ul.className='ol';
+    mix.forEach((oi,pos)=>{
+      const li=document.createElement('li');
+      const btn=document.createElement('button');btn.className='ob';btn.type='button';
+      btn.innerHTML='<span class="mk">'+L[pos]+'</span><span>'+ops[oi]+'</span>';
+      btn.onclick=()=>ans(qi,pos,btn,pista,msgOk);
+      li.appendChild(btn);ul.appendChild(li);
+    });
+    div.appendChild(ul);
+    const rt=document.createElement('div');rt.className='retro';rt.id='rt'+qi;div.appendChild(rt);
+    cnt.appendChild(div);
+  });
+}
+function ans(qi,pos,btn,pista,msgOk){
+  if(est[qi].done)return;
+  const nc=est[qi].nc;est[qi].done=true;
+  const blk=document.getElementById('p'+qi);
+  blk.querySelectorAll('.ob').forEach(b=>b.disabled=true);
+  const rt=document.getElementById('rt'+qi);
+  if(pos===nc){
+    btn.classList.add('ok3');btn.querySelector('.mk').textContent='✓';
+    rt.className='retro ok4';rt.innerHTML='<strong>✅ ¡Correcto!</strong> '+msgOk;
+    blk.classList.add('ok2');est[qi].ok=true;
+  } else {
+    btn.classList.add('err3');btn.querySelector('.mk').textContent='✗';
+    blk.querySelectorAll('.ob')[nc].classList.add('ok3');
+    blk.querySelectorAll('.ob')[nc].querySelector('.mk').textContent='✓';
+    rt.className='retro err4';rt.innerHTML='<strong>💡 Pista:</strong> '+pista;
+    blk.classList.add('err2');
+  }
+}
+function showScore(){
+  let tot=0;est.forEach(e=>{if(e.ok)tot++;});
+  const n=QQ.length,p=Math.round(tot/n*100);
+  document.getElementById('rn').textContent=tot+' / '+n;
+  document.getElementById('rbf').style.width=p+'%';
+  let msg='';
+  if(tot===n) msg='🌟 <strong>¡Perfecto!</strong> Dominás todos los temas de esta práctica. ¡Muy bien preparado/a para el examen!';
+  else if(p>=75) msg='💪 <strong>¡Muy bien!</strong> Resultados sólidos. Revisá los ítems que fallaste antes del examen para asegurar esos puntos.';
+  else if(p>=50) msg='📘 <strong>¡Buen intento!</strong> Hay temas por reforzar. Revisá propiedades de potencias, radicales y exponentes fraccionarios.';
+  else msg='📖 <strong>Seguí practicando.</strong> Repasá los conceptos de cada sección y consultá con la prof. Melissa las dudas que tenés.';
+  document.getElementById('rm').innerHTML=msg;
+  const r=document.getElementById('rf');r.classList.add('vis');
+  setTimeout(()=>r.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
+}
+
+/* ══════════════════════════════════════════════════
+   PESTAÑA 2 — CORRESPONDENCIA (5 pares)
+══════════════════════════════════════════════════ */
+const CORR_PAIRS=[
+  {id:'a', col1:'x² · x⁶', col2:'x⁸'},
+  {id:'b', col1:'(y³)⁴', col2:'y¹²'},
+  {id:'c', col1:'z⁹ ÷ z³', col2:'z⁶'},
+  {id:'d', col1:'5⁻²', col2:'1/25'},
+  {id:'e', col1:'t⁰', col2:'1'}
+];
+let selCorr=null,corrHits=0;
+function initCorr(){
+  selCorr=null;corrHits=0;
+  const sc=document.getElementById('corr-sc');sc.textContent='';sc.className='corr-score';
+  const lM=shuf(CORR_PAIRS),rM=shuf(CORR_PAIRS);
+  const c1=document.getElementById('corr-col1'),c2=document.getElementById('corr-col2');
+  c1.innerHTML='';c2.innerHTML='';
+  lM.forEach(p=>{const d=mkCorr(p.id,'L',p.col1);c1.appendChild(d)});
+  rM.forEach(p=>{const d=mkCorr(p.id,'R',p.col2);c2.appendChild(d)});
+}
+function mkCorr(id,side,txt){
+  const d=document.createElement('div');
+  d.className='corr-item';d.dataset.id=id;d.dataset.side=side;d.innerHTML=txt;
+  d.setAttribute('role','button');d.setAttribute('tabindex','0');
+  d.onclick=()=>clickCorr(d);
+  d.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')clickCorr(d)};
+  return d;
+}
+function clickCorr(c){
+  if(c.classList.contains('matched'))return;
+  if(c.dataset.side==='L'){
+    document.querySelectorAll('#corr-col1 .corr-item').forEach(x=>x.classList.remove('sel-c'));
+    c.classList.add('sel-c');selCorr=c;return;
+  }
+  if(!selCorr)return;
+  if(selCorr.dataset.id===c.dataset.id){
+    selCorr.classList.remove('sel-c');selCorr.classList.add('matched');c.classList.add('matched');corrHits++;
+    const sc=document.getElementById('corr-sc');
+    if(corrHits<CORR_PAIRS.length) sc.textContent='✓ '+corrHits+' / '+CORR_PAIRS.length+' pares encontrados';
+    else{sc.textContent='🎉 ¡Excelente! Encontraste los 5 pares correctamente.';sc.className='corr-score win';}
+    selCorr=null;
+  } else {
+    selCorr.classList.remove('sel-c');
+    selCorr.classList.add('wrong-flash');c.classList.add('wrong-flash');
+    const tL=selCorr,tR=c;selCorr=null;
+    setTimeout(()=>{tL.classList.remove('wrong-flash');tR.classList.remove('wrong-flash')},500);
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   PESTAÑA 3 — OPERACIÓN COMBINADA
+══════════════════════════════════════════════════ */
+function initOp(){
+  const cnt=document.getElementById('op-cont');
+  cnt.innerHTML=`
+  <div class="op-wrap">
+    <h3>🧮 Ejercicio: Resolvé la siguiente operación combinada paso a paso</h3>
+    <div class="op-enunc">
+      (6 ÷ <sup>2</sup>/<sub>3</sub>) − 2 · (<sup>3</sup>/<sub>4</sub> + 1<sup>1</sup>/<sub>2</sub>) + (∛27 + 4⁰)
+    </div>
+    <div class="op-pasos">
+      <div>
+        <div class="op-paso-label">Paso 1 — Resolvé dentro de los paréntesis</div>
+        <input class="op-paso-inp" id="op1" placeholder="Resultado de cada paréntesis..." autocomplete="off">
+      </div>
+      <div>
+        <div class="op-paso-label">Paso 2 — Resolvé potencias y radicales</div>
+        <input class="op-paso-inp" id="op2" placeholder="∛27 = ?, 4⁰ = ? ..." autocomplete="off">
+      </div>
+      <div>
+        <div class="op-paso-label">Paso 3 — Resolvé multiplicaciones y divisiones</div>
+        <input class="op-paso-inp" id="op3" placeholder="6 ÷ (2/3) = ?, 2 · (resultado p2) = ? ..." autocomplete="off">
+      </div>
+      <div>
+        <div class="op-paso-label">Paso 4 — Resultado final (sumas y restas)</div>
+        <input class="op-paso-inp" id="op4" placeholder="Resultado final ..." autocomplete="off">
+      </div>
+    </div>
+    <div class="op-btns">
+      <button class="op-btn-ver" onclick="verificarOp()">✅ Verificar respuesta final</button>
+      <button class="op-btn-solucion" onclick="verSolucion()">📋 Ver solución completa</button>
+    </div>
+    <div class="op-resultado" id="op-res"></div>
+    <div class="solucion-box" id="sol-box">
+      <strong style="color:var(--li)">📋 Solución paso a paso:</strong><br><br>
+      <div class="step-line">
+        <strong>Expresión:</strong> (6 ÷ 2/3) − 2·(3/4 + 3/2) + (∛27 + 4⁰)
+      </div>
+      <div class="step-line">
+        <strong>Paso 1 — Paréntesis:</strong><br>
+        • 6 ÷ 2/3 = 6 × 3/2 = 18/2 = <strong>9</strong><br>
+        • 3/4 + 3/2 = 3/4 + 6/4 = <strong>9/4</strong><br>
+        • ∛27 = <strong>3</strong> &nbsp;|&nbsp; 4⁰ = <strong>1</strong>
+      </div>
+      <div class="step-line">
+        <strong>Paso 2 — Sustitución:</strong><br>
+        9 − 2·(9/4) + (3 + 1)
+      </div>
+      <div class="step-line">
+        <strong>Paso 3 — Multiplicación:</strong><br>
+        2 × 9/4 = 18/4 = <strong>9/2</strong> &nbsp;|&nbsp; (3 + 1) = <strong>4</strong><br>
+        Expresión: 9 − 9/2 + 4
+      </div>
+      <div class="step-line">
+        <strong>Paso 4 — Sumas y restas:</strong><br>
+        9 − 9/2 + 4 = 18/2 − 9/2 + 8/2 = 17/2 = <strong style="color:var(--vd)">8½</strong>
+      </div>
+      <div class="step-line" style="background:var(--vdc);padding:8px 12px;border-radius:6px;margin-top:4px">
+        <strong>✅ Resultado final: 17/2 = 8½</strong>
+      </div>
+    </div>
+  </div>`;
+}
+function verificarOp(){
+  const v=document.getElementById('op4').value.trim().replace(/\s/g,'');
+  const validos=['17/2','8.5','8,5','81/2','8½','17÷2'];
+  const ok=validos.some(x=>v.toLowerCase().includes(x.replace('/','÷').toLowerCase())||v===x);
+  const res=document.getElementById('op-res');
+  if(ok){
+    res.className='op-resultado vis-ok';
+    res.innerHTML='<strong>✅ ¡Correcto!</strong> El resultado final es <strong>17/2 = 8½</strong>. Revisá que tus pasos intermedios estén ordenados.';
+  } else {
+    res.className='op-resultado vis-sol';
+    res.innerHTML='<strong>💡 Revisá:</strong> El resultado final no es correcto. Verificá cada paso: divisiones de fracciones, suma de fracciones con distinto denominador, y el valor de ∛27 y 4⁰. Presioná "Ver solución completa" si necesitás apoyo.';
+  }
+}
+function verSolucion(){
+  const s=document.getElementById('sol-box');
+  s.classList.toggle('vis');
+}
+
+/* ══════════════════════════════════════════════════
+   PESTAÑA 4 — PROBLEMAS (2 problemas)
+══════════════════════════════════════════════════ */
+function initProb(){
+  const cnt=document.getElementById('prob-cont');
+  cnt.innerHTML=`
+
+  <!-- PROBLEMA 1 -->
+  <div class="prob-wrap">
+    <h3>📌 Problema 1 — Negocio en la Feria</h3>
+    <div class="prob-enunc">
+      Una emprendedora del cantón de Paraíso inicia un negocio de cajetas artesanales con un capital de <strong>₡30 000</strong>. El lunes compra insumos en la Feria del Agricultor: <strong>₡12 500</strong> en leche de Ochomogo y <strong>₡6 800</strong> en azúcar y canela. El miércoles recibe un apoyo de <strong>₡20 000</strong> de un familiar, pero debe pagar <strong>₡5 200</strong> por envases y etiquetas. Al cerrar el miércoles, registra ventas por <strong>₡28 400</strong>. ¿Cuál es el saldo final en efectivo?
+    </div>
+    <table class="prob-tabla">
+      <thead><tr><th>Datos</th><th>Operación(es)</th><th>Tu respuesta</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><input class="prob-inp" id="pr1-datos" placeholder="Anotá los datos importantes..." style="min-height:80px"></td>
+          <td><input class="prob-inp" id="pr1-ops" placeholder="Planteá las sumas y restas..." style="min-height:80px"></td>
+          <td><input class="prob-inp" id="pr1-resp" placeholder="Saldo final = ₡..." style="min-height:80px"></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="op-btns">
+      <button class="op-btn-ver" onclick="verificarProb1()">✅ Verificar respuesta</button>
+      <button class="op-btn-solucion" onclick="toggleSol('sol1')">📋 Ver solución</button>
+    </div>
+    <div class="op-resultado" id="res1"></div>
+    <div class="solucion-box" id="sol1">
+      <strong style="color:var(--li)">📋 Solución Problema 1:</strong><br><br>
+      <div class="step-line"><strong>Capital inicial:</strong> ₡30 000</div>
+      <div class="step-line"><strong>Egresos del lunes:</strong> −₡12 500 − ₡6 800 = −₡19 300</div>
+      <div class="step-line"><strong>Ingreso miércoles:</strong> +₡20 000</div>
+      <div class="step-line"><strong>Egreso miércoles:</strong> −₡5 200</div>
+      <div class="step-line"><strong>Ventas:</strong> +₡28 400</div>
+      <div class="step-line"><strong>Saldo = </strong>30 000 − 19 300 + 20 000 − 5 200 + 28 400</div>
+      <div class="step-line" style="background:var(--vdc);padding:8px 12px;border-radius:6px;margin-top:4px">
+        <strong>✅ Saldo final = ₡53 900</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROBLEMA 2 -->
+  <div class="prob-wrap">
+    <h3>📌 Problema 2 — Producción de miel en Cachí</h3>
+    <div class="prob-enunc">
+      Un productor de miel de Cachí recolecta <strong>8 400 kg</strong> de miel en la temporada. En la primera etapa, envasa el total en recipientes de <strong>35 kg</strong> cada uno para transportarlos. En la segunda etapa, el contenido de cada recipiente grande se divide en frascos pequeños de <strong>250 gramos</strong> (recordá: 35 kg = 35 000 gramos) para la venta en supermercados.
+      <br><br>
+      <strong>A)</strong> ¿Cuántos recipientes grandes se llenaron?<br>
+      <strong>B)</strong> ¿Cuántos frascos pequeños de 250 g se obtienen en total?
+    </div>
+    <table class="prob-tabla">
+      <thead><tr><th>Parte</th><th>Operación</th><th>Tu respuesta</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>A)</strong> Recipientes grandes</td>
+          <td><input class="prob-inp" id="pr2a-op" placeholder="8 400 ÷ 35 = ..."></td>
+          <td><input class="prob-inp" id="pr2a-resp" placeholder="? recipientes"></td>
+        </tr>
+        <tr>
+          <td><strong>B)</strong> Frascos pequeños</td>
+          <td><input class="prob-inp" id="pr2b-op" placeholder="recipientes × (35 000 ÷ 250) = ..."></td>
+          <td><input class="prob-inp" id="pr2b-resp" placeholder="? frascos en total"></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="op-btns">
+      <button class="op-btn-ver" onclick="verificarProb2()">✅ Verificar respuestas</button>
+      <button class="op-btn-solucion" onclick="toggleSol('sol2')">📋 Ver solución</button>
+    </div>
+    <div class="op-resultado" id="res2"></div>
+    <div class="solucion-box" id="sol2">
+      <strong style="color:var(--li)">📋 Solución Problema 2:</strong><br><br>
+      <div class="step-line"><strong>Parte A:</strong> 8 400 ÷ 35 = <strong>240 recipientes grandes</strong></div>
+      <div class="step-line"><strong>Parte B — frascos por recipiente:</strong> 35 000 ÷ 250 = 140 frascos</div>
+      <div class="step-line"><strong>Total de frascos:</strong> 240 × 140 = <strong>33 600 frascos pequeños</strong></div>
+      <div class="step-line" style="background:var(--vdc);padding:8px 12px;border-radius:6px;margin-top:4px">
+        <strong>✅ A) 240 recipientes &nbsp;|&nbsp; B) 33 600 frascos</strong>
+      </div>
+    </div>
+  </div>`;
+}
+
+function verificarProb1(){
+  const v=document.getElementById('pr1-resp').value.replace(/[₡\s.,]/g,'');
+  const res=document.getElementById('res1');
+  if(v==='53900'){
+    res.className='op-resultado vis-ok';
+    res.innerHTML='<strong>✅ ¡Correcto!</strong> El saldo final es ₡53 900. Muy bien identificados los ingresos y egresos.';
+  } else {
+    res.className='op-resultado vis-sol';
+    res.innerHTML='<strong>💡 Revisá:</strong> Sumá todos los ingresos (capital + apoyo + ventas) y restá todos los egresos (compras + envases). Verificá que no olvidaste ningún dato.';
+  }
+}
+function verificarProb2(){
+  const a=document.getElementById('pr2a-resp').value.replace(/[^\d]/g,'');
+  const b=document.getElementById('pr2b-resp').value.replace(/[^\d]/g,'');
+  const res=document.getElementById('res2');
+  const okA=a==='240', okB=b==='33600';
+  if(okA&&okB){
+    res.className='op-resultado vis-ok';
+    res.innerHTML='<strong>✅ ¡Perfecto!</strong> A) 240 recipientes y B) 33 600 frascos. Excelente trabajo.';
+  } else if(okA||okB){
+    res.className='op-resultado vis-sol';
+    res.innerHTML='<strong>💡 Casi:</strong> '+(okA?'✓ La parte A es correcta.':'✗ Revisá la parte A: 8 400 ÷ 35.')+' '+(okB?'✓ La parte B es correcta.':'✗ Revisá la parte B: frascos por recipiente = 35 000 ÷ 250, luego multiplicá por el total de recipientes.');
+  } else {
+    res.className='op-resultado vis-sol';
+    res.innerHTML='<strong>💡 Revisá:</strong> Para la parte A dividí el total de kg entre el tamaño de cada recipiente. Para la parte B, primero calculá cuántos frascos caben en un recipiente y luego multiplicá por el total de recipientes.';
+  }
+}
+function toggleSol(id){
+  document.getElementById(id).classList.toggle('vis');
+}
+
+/* ══════════════════════════════════════════════════
+   INICIO
+══════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded',()=>{
+  initQ();initCorr();initOp();initProb();updProg();
+});
+</script>
+</body>
+</html>
